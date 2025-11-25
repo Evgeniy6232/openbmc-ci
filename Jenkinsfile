@@ -7,8 +7,8 @@ pipeline {
                 sh '''
                     echo "Запуск опенбмс"
                     mkdir -p romulus
-                    cp /var/openbmc-images/obmc-phosphor-image-romulus-20250909100209.static.mtd ./romulus/
-                    
+                    cp /var/jenkins_home/openbmc-images/obmc-phosphor-image-romulus-20250909100209.static.mtd ./romulus/
+
                     qemu-system-arm -m 256 -M romulus-bmc -nographic \
                         -drive file=romulus/obmc-phosphor-image-romulus-*.static.mtd,format=raw,if=mtd \
                         -net nic -net user,hostfwd=:0.0.0.0:2443-:443,hostname=qemu &
