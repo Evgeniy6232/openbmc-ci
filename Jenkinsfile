@@ -92,7 +92,7 @@ pipeline {
         }
         
         stage('Нагрузочное тестирование') {
-            stepasds 
+            steps{
                  '''
                     echo "Нагрузочное тестирование работает" > loadtest.jtl
                 '''
