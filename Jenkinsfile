@@ -18,27 +18,25 @@ pipeline {
             }
         }
         
-        stage('Автотесты') {
+        stage('Run OpenBMC Auto Tests (pytest)') {
             steps {
                 sh '''
-                    echo "Проверка автотестов"
-                    curl -k https://localhost:2443 > web-access.log
-                    
-                    cat > unit-test-results.xml << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="OpenBMC Integration Tests" tests="3" failures="0">
-    <testcase name="qemu_startup"    classname="Bootstrap"    time="30.0"/>
-    <testcase name="openbmc_boot"    classname="System"       time="20.0"/>
-    <testcase name="web_interface"   classname="Connectivity" time="12.0"/>
-</testsuite>
-EOF
+                    echo "=== ЗАПУСК АВТОТЕСТОВ OPENBMC (PYTEST) ==="
+                    cd lab4
+                    source venv/bin/activate
+            
+                    echo "Запуск pytest теста: lab5.py"
+                    cd openbmc_tests
+                    python -m pytest lab5.py -v --junitxml=../../test-results/autotests.xml
+            
+                    echo "Автотесты завершены"
                 '''
             }
             post {
                 always {
-                    junit 'unit-test-results.xml'
-                    archiveArtifacts artifacts: 'web-access.log', fingerprint: true
-                }
+                    junit 'test-results/autotests.xml'
+                    archiveArtifacts artifacts: 'test-results/autotests.xml', fingerprint: true
+                }   
             }
         }
         
