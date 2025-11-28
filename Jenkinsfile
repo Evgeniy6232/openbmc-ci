@@ -43,9 +43,47 @@ EOF
         }
         
         stage('WebUI Тесты') {
+            
             steps {
                 sh '''
                     echo "WebUI тесты работают" > webtest-report.html
+                    echo "=== ЗАПУСК WEBUI ТЕСТОВ OPENBMC ==="
+                    cd lab4
+                    source venv/bin/activate
+                    
+                    mkdir -p ../test-results/webui
+                    
+                    # Запускаем каждый WebUI тест отдельно
+                    cd openbmc_tests  # ← ДОБАВЛЕНО!
+                    
+                    for webui_test in test_ban.py test_error.py test_login.py test_OnOff.py test_temp.py; do
+                        if [ -f "$webui_test" ]; then
+                            filename=$(basename "$webui_test" .py)
+                            echo "Запуск WebUI теста: $filename"
+                            
+                            # Запускаем тест и сохраняем результат
+                            python "$webui_test" 2>&1 | tee "../../test-results/webui/${filename}.log"
+                            TEST_EXIT_CODE=${PIPESTATUS[0]}
+                            
+                            # Создаем XML отчет для Jenkins
+                            cat > "../../test-results/webui/${filename}.xml" << EOF
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <testsuite name="${filename}" tests="1">
+                                <testcase classname="webui.${filename}" name="main">
+                                $(if [ $TEST_EXIT_CODE -ne 0 ]; then echo "<failure message=\"WebUI test failed with exit code $TEST_EXIT_CODE\"/>"; fi)
+                                </testcase>
+                            </testsuite>
+                            EOF
+                            
+                            if [ $TEST_EXIT_CODE -eq 0 ]; then
+                                echo "✅ WebUI тест ПРОЙДЕН: $filename"
+                            else
+                                echo "❌ WebUI тест ПРОВАЛЕН: $filename"
+                            fi
+                        fi
+                    done
+                    
+                    echo "Все WebUI тесты завершены"
                 '''
             }
             post {
