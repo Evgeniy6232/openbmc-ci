@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'qemuorg/qemu:latest'
-            args '--privileged --network host'
-        }
-    }
+    agent any
     
     stages {
         stage('Запуск OpenBMC') {
