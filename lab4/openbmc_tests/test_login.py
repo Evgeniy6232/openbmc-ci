@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-def test_login(){
+def test_login():
     service = Service(ChromeDriverManager().install())  
     options = Options()
     options.add_argument('--headless=new')
@@ -47,6 +47,5 @@ def test_login(){
     
     finally:
         driver.quit()
-}
 
 test_login()

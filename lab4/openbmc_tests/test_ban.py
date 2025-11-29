@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-def test_ban(){
+def test_ban():
     service = Service(ChromeDriverManager().install())  
     options = Options()
     options.add_argument('--headless=new')
@@ -43,6 +43,5 @@ def test_ban(){
     
     finally:
         driver.quit()
-}
 
 test_ban()
