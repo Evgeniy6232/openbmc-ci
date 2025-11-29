@@ -1,5 +1,8 @@
 import pytest
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 BASE_URL = "https://localhost:2443/redfish/v1"
 
