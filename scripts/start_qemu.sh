@@ -10,8 +10,8 @@ docker build -t qemu-openbmc ./docker/qemu
 
 echo "Запуск OpenBMC QEMU..."
 docker run -d --name qemu-openbmc \
-  -p 2222:2222 -p 2443:443 -p 2623:623 \
+  -p 2222:2222 -p 2443:2443 -p 2623:2623/udp \
   qemu-openbmc
 
-echo "OpenBMC запущен. Ждем готовности..."
-sleep 30  
+echo "OpenBMC запущен. Ждем готовности 8 минут..."
+sleep 60
