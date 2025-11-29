@@ -12,7 +12,6 @@ pipeline {
          stage('WEB UI тесты') {
             steps {
                 sh '''
-                    # Активируем виртуальное окружение
                     source lab4/venv/bin/activate
                     
                     # Проверяем тесты
@@ -30,7 +29,6 @@ pipeline {
             }
             post {
                 always {
-                    # Сохраняем отчёт тестов в Jenkins
                     publishHTML([
                         allowMissing: false,
                         alwaysLinkToLastBuild: true,
