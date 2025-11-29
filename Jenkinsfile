@@ -8,20 +8,21 @@ pipeline {
                     chmod +x ./scripts/start_qemu.sh
                     ./scripts/start_qemu.sh &
                     sleep 60
+                    echo "OpenBMC готов для тестов!"
                 '''
-         stage('WEB UI тесты') {
+            }
+        }
+        
+        stage('WEB UI тесты') {
             steps {
                 sh '''
                     source lab4/venv/bin/activate
-
                     ls -la lab4/openbmc_tests/*.py
-                    
-                    pytest lab4/openbmc_tests/ \
-                        --html=lab4/test-report.html \
-                        --self-contained-html \
-                        -v \
+                    pytest lab4/openbmc_tests/ \\
+                        --html=lab4/test-report.html \\
+                        --self-contained-html \\
+                        -v \\
                         --tb=short
-                    
                     echo "WEB UI тесты завершены!"
                 '''
             }
@@ -50,3 +51,4 @@ pipeline {
         }
     }
 }
+
