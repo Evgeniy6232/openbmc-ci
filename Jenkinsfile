@@ -13,11 +13,9 @@ pipeline {
             steps {
                 sh '''
                     source lab4/venv/bin/activate
-                    
-                    # Проверяем тесты
+
                     ls -la lab4/openbmc_tests/*.py
                     
-                    # Запускаем все тесты OpenBMC WEB UI
                     pytest lab4/openbmc_tests/ \
                         --html=lab4/test-report.html \
                         --self-contained-html \
