@@ -1,5 +1,7 @@
 from locust import HttpUser, task, between
 import base64
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class OpenBMCTest(HttpUser):
     wait_time = between(2, 5)
