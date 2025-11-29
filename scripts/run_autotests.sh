@@ -15,20 +15,24 @@ echo "Проверка автотестов:"
 ls -la lab4/openbmc_tests/lab5.py || { echo "Файл lab4/openbmc_tests/lab5.py не найден"; exit 1; }
 
 echo "⏳ Ждём готовности OpenBMC Redfish API (5 мин max)..."
+SUCCESS=0
 for i in {1..30}; do
     if curl -k -f -m 10 https://localhost:2443/redfish/v1/Systems >/dev/null 2>&1; then
         echo "OpenBMC Redfish API готов!"
+        SUCCESS=1
         break
     fi
     echo "⏳ OpenBMC не готов ($i/30)... ждём 10s"
     sleep 10
-else
+done
+
+if [ $SUCCESS -eq 0 ]; then
     echo "OpenBMC не запустился за 5 минут!"
     curl -k -v https://localhost:2443/redfish/v1/Systems || echo "Port 2443 недоступен"
     exit 1
 fi
 
-echo "🚀 Запуск pytest..."
+echo "Запуск pytest..."
 cd lab4 || exit 1
 source venv_autotests/bin/activate
 pytest openbmc_tests/lab5.py \
@@ -38,6 +42,6 @@ pytest openbmc_tests/lab5.py \
     --tb=short \
     --junitxml=../reports/autotests.xml || { echo "Автотесты провалились"; exit 1; }
 
-echo "✅ Автотесты завершены!"
+echo "Автотесты завершены!"
 echo "Отчет: lab4/test-report.html"
 ls -la test-report.html
