@@ -11,13 +11,5 @@ services:
     restart: unless-stopped
     network_mode: host   
 
-  qemu-openbmc:  
-    build:
-      context: ./docker/qemu     
-      dockerfile: Dockerfile
-    container_name: qemu-openbmc
-    network_mode: host           
-    restart: "no"
-
 volumes:
   jenkins_home:
