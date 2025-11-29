@@ -26,5 +26,7 @@ pytest openbmc_tests/ \
     --junitxml=../reports/webui-tests.xml || { echo "Тесты провалились"; exit 1; }
 
 echo "WEB UI тесты завершены!"
-echo "Отчет: lab4/test-report.html"
-ls -la test-report.html
+echo "Отчеты:"
+echo "  - lab4/test-report.html"
+echo "  - reports/webui-tests.xml"
+ls -la ../lab4/test-report.html ../reports/webui-tests.xml || echo "Некоторые отчеты не созданы"

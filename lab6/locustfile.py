@@ -35,22 +35,22 @@ class OpenBMCTest(HttpUser):
             name="OpenBMC - Состояние питания"
         )
 
-class PublicAPITest(HttpUser):
+# class PublicAPITest(HttpUser):
 
-    wait_time = between(1, 3)
+#     wait_time = between(1, 3)
     
-    host = "https://jsonplaceholder.typicode.com"
+#     host = "https://jsonplaceholder.typicode.com"
     
-    @task(3)  
-    def get_all_posts(self):
-        self.client.get(
-            "/posts",
-            name="JSONPlaceholder - Все посты"
-        )
+#     @task(3)  
+#     def get_all_posts(self):
+#         self.client.get(
+#             "/posts",
+#             name="JSONPlaceholder - Все посты"
+#         )
     
-    @task(1)  
-    def get_weather(self):
-        self.client.get(
-            "http://wttr.in/?format=3",
-            name="wttr.in - Погода"
-        )
+#     @task(1)  
+#     def get_weather(self):
+#         self.client.get(
+#             "http://wttr.in/?format=3",
+#             name="wttr.in - Погода"
+#         )

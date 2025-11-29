@@ -22,6 +22,8 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'lab4/test-report.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'reports/webui-tests.xml', allowEmptyArchive: true
+                    junit 'reports/webui-tests.xml'
                 }
             }
         }
@@ -36,21 +38,23 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'lab4/test-report.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'reports/autotests.xml', allowEmptyArchive: true
                     junit 'reports/autotests.xml'
                 }
             }
         }
 
         stage('Нагрузочное тестирование') {
-                steps {
-                    sh ''' 
-                        chmod +x scripts/run_locust.sh
-                        ./scripts/run_locust.sh
-                    '''
-                }
+            steps {
+                sh ''' 
+                    chmod +x scripts/run_locust.sh
+                    ./scripts/run_locust.sh
+                '''
+            }
             post {
                 always {
-                    archiveArtifacts 'lab6/locust-report.html'
+                    archiveArtifacts artifacts: 'lab6/locust-report.html', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'lab6/locust.log', allowEmptyArchive: true
                 }
             }
         }
@@ -59,6 +63,9 @@ pipeline {
     post {
         always {
             sh 'docker stop qemu-openbmc || true && docker rm qemu-openbmc || true'
+            archiveArtifacts artifacts: '**/*.html', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
         }
     }
 }

@@ -20,9 +20,7 @@ locust -f locustfile.py \
 
 deactivate 
 
-echo "НАГРУЗКА ЗАВЕРШЕНА!"
-echo "Отчёт: lab6/locust-report.html"
-ls -la locust-report.*
-
-echo "СТАТИСТИКА:"
-grep -E "requests|failure|median|99%" locust-report.html || true
+echo "Нагрузочное тестирование завершено!"
+echo "Отчет: lab6/locust-report.html"
+echo "Лог: lab6/locust.log"
+ls -la locust-report.html locust.log || echo "Некоторые файлы не созданы"

@@ -25,5 +25,7 @@ pytest openbmc_tests/lab5.py \
     --junitxml=../reports/autotests.xml || { echo "Автотесты провалились"; exit 1; }
 
 echo "Автотесты завершены!"
-echo "Отчет: lab4/test-report.html"
-ls -la test-report.html
+echo "Отчеты:"
+echo "  - lab4/test-report.html" 
+echo "  - reports/autotests.xml"
+ls -la ../lab4/test-report.html ../reports/autotests.xml || echo "Некоторые отчеты не созданы"
