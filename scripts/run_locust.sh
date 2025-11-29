@@ -2,12 +2,14 @@
 set -e
 
 echo "=== НАГРУЗОЧНОЕ ТЕСТИРОВАНИЕ OpenBMC ==="
-echo "⏳ Проверка OpenBMC..."
+cd lab6
 
-pip3 install locust || echo "Locust уже установлен"
+python3 -m venv locust-venv
+source locust-venv/bin/activate
+pip install locust  
 
 echo "Locust: 20 users, 5/sec, 60 сек → https://localhost:2443"
-cd lab6
+
 locust -f locustfile.py \
        --headless \
        --host=https://localhost:2443 \
@@ -16,7 +18,9 @@ locust -f locustfile.py \
        --html=locust-report.html \
        --csv=locust-report
 
-echo "НАГРУЗКА ЗАВЕРШЕНА!"
+deactivate 
+
+echo "✅ НАГРУЗКА ЗАВЕРШЕНА!"
 echo "Отчёт: lab6/locust-report.html"
 ls -la locust-report.*
 
