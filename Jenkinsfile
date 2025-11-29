@@ -5,8 +5,8 @@ pipeline {
         stage('Запуск OpenBMC') {
             steps {
                 sh '''
-                    chmod +x scripts/start_openbmc.sh
-                    ./scripts/start_openbmc.sh
+                    chmod +x scripts/start_qemu.sh
+                    ./scripts/start_qemu.sh
                     sleep 90
                 '''
             }
