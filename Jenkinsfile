@@ -1,14 +1,13 @@
 pipeline {
     agent any
     
-    stages {                   
-        stage('Запуск OpenBmc') {
+    stages {
+        stage('Запуск OpenBMC') {
             steps {
                 sh '''
-                    chmod +x ./scripts/start_qemu.sh
-                    ./scripts/start_qemu.sh &
-                    sleep 60
-                    echo "OpenBMC готов для тестов!"
+                    chmod +x scripts/start_openbmc.sh
+                    ./scripts/start_openbmc.sh
+                    sleep 90
                 '''
             }
         }
@@ -16,26 +15,13 @@ pipeline {
         stage('WEB UI тесты') {
             steps {
                 sh '''
-                    source lab4/venv/bin/activate
-                    ls -la lab4/openbmc_tests/*.py
-                    pytest lab4/openbmc_tests/ \\
-                        --html=lab4/test-report.html \\
-                        --self-contained-html \\
-                        -v \\
-                        --tb=short
-                    echo "WEB UI тесты завершены!"
+                    chmod +x scripts/run_webui_tests.sh
+                    ./scripts/run_webui_tests.sh
                 '''
             }
             post {
                 always {
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'lab4/',
-                        reportFiles: 'test-report.html',
-                        reportName: 'OpenBMC WEB UI Test Report'
-                    ])
+                    archiveArtifacts artifacts: 'lab4/test-report.html', allowEmptyArchive: true
                 }
             }
         }
@@ -43,12 +29,7 @@ pipeline {
     
     post {
         always {
-            sh '''
-                docker stop qemu-openbmc || true
-                docker rm qemu-openbmc || true
-            '''
-            echo 'Очистка завершена'
+            sh 'docker stop qemu-openbmc || true && docker rm qemu-openbmc || true'
         }
     }
 }
-
