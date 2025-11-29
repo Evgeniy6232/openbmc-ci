@@ -43,8 +43,9 @@ pipeline {
 
         stage('Нагрузочное тестирование') {
                 steps {
-                    sh ''' 'chmod +x ./run_locust.sh 
-                    ./run_locust.sh'
+                    sh ''' 
+                        chmod +x scripts/run_locust.sh
+                        ./scripts/run_locust.sh
                     '''
                 }
             post {
