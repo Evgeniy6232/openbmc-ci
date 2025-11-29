@@ -40,6 +40,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Нагрузочное тестирование') {
+                steps {
+                    sh ''' 'chmod +x ./run_locust.sh 
+                    ./run_locust.sh'
+                    '''
+                }
+            post {
+                always {
+                    archiveArtifacts 'lab6/locust-report.html'
+                }
+            }
+        }
     }
     
     post {
