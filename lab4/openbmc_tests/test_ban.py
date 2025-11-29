@@ -7,38 +7,42 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-service = Service(ChromeDriverManager().install())  
-options = Options()
-options.add_argument('--headless=new')
-options.add_argument('--no-sandbox')
-options.add_argument('--disable-dev-shm-usage')
+def test_ban(){
+    service = Service(ChromeDriverManager().install())  
+    options = Options()
+    options.add_argument('--headless=new')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
-driver = webdriver.Chrome(service=service, options=options)  
+    driver = webdriver.Chrome(service=service, options=options)  
 
-try:
-    for i in range(3):
-        driver.get("https://localhost:2443")
+    try:
+        for i in range(3):
+            driver.get("https://localhost:2443")
         
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.ID, "username"))
-        )
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "username"))
+            )
         
-        driver.find_element(By.ID, "username").send_keys("root")
-        driver.find_element(By.ID, "password").send_keys("wrong")
+            driver.find_element(By.ID, "username").send_keys("root")
+            driver.find_element(By.ID, "password").send_keys("wrong")
         
-        buttons = driver.find_elements(By.TAG_NAME, "button")
-        for btn in buttons:
-            if "Log in" in btn.text:
-                btn.click()
-                break
+            buttons = driver.find_elements(By.TAG_NAME, "button")
+            for btn in buttons:
+                if "Log in" in btn.text:
+                    btn.click()
+                    break
         
-        time.sleep(5)
-        print(f"Попытка {i+1}/3")
+            time.sleep(5)
+            print(f"Попытка {i+1}/3")
     
-    print("Блокировка аккаунта")
+        print("Блокировка аккаунта")
     
-except Exception as e:
-    print(f"Ошибка: {e}")
+    except Exception as e:
+        print(f"Ошибка: {e}")
     
-finally:
-    driver.quit()
+    finally:
+        driver.quit()
+}
+
+test_ban()

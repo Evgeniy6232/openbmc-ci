@@ -16,7 +16,7 @@ ls -la lab4/openbmc_tests/lab5.py || { echo "Файл lab4/openbmc_tests/lab5.py
 
 echo "⏳ Ждём готовности OpenBMC Redfish API (5 мин max)..."
 SUCCESS=0
-for i in {1..30}; do
+for i in {1..48}; do
     if curl -k -f -m 10 https://localhost:2443/redfish/v1/Systems >/dev/null 2>&1; then
         echo "OpenBMC Redfish API готов!"
         SUCCESS=1
