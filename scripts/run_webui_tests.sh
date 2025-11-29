@@ -11,7 +11,6 @@ cd ..
 pip install --upgrade pip
 pip install pytest pytest-html pytest-selenium webdriver-manager || { echo "Ошибка установки pytest"; exit 1; }
 
-# webdriver-manager сам найдёт Chromium и скачает правильный Chromedriver
 echo "Chromedriver будет установлен автоматически через webdriver-manager"
 
 echo "Проверка тестов:"
