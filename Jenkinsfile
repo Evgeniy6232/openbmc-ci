@@ -25,6 +25,21 @@ pipeline {
                 }
             }
         }
+        
+        stage('Автотесты') {
+            steps {
+                sh '''
+                    chmod +x scripts/run_autotests.sh
+                    ./scripts/run_autotests.sh
+                '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'lab4/test-report.html', allowEmptyArchive: true
+                    junit 'reports/autotests.xml'
+                }
+            }
+        }
     }
     
     post {
