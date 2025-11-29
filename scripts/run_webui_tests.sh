@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Запуск WEB UI тестов OpenBMC..."
+echo "🧪 Запуск WEB UI тестов OpenBMC..."
 
 echo "Создание/обновление venv..."
 rm -rf lab4/venv || true
@@ -9,27 +9,15 @@ source venv/bin/activate || { echo "Ошибка активации venv"; exit 
 cd ..
 
 pip install --upgrade pip
-pip install pytest pytest-html pytest-selenium || { echo "Ошибка установки pytest"; exit 1; }
-# Установка Chrome и Chromedriver для Selenium
-echo "Установка Chrome для Selenium..."
-sudo apt-get update
-sudo apt-get install -y wget gnupg2 software-properties-common
-wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-sudo apt-get update
-sudo apt-get install -y google-chrome-stable
+pip install pytest pytest-html pytest-selenium webdriver-manager || { echo "Ошибка установки pytest"; exit 1; }
 
-# Chromedriver (автоматически под версию Chrome)
-CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION%.*}/chromedriver_linux64.zip"
-unzip /tmp/chromedriver.zip -d /tmp/
-sudo mv /tmp/chromedriver /usr/local/bin/
-sudo chmod +x /usr/local/bin/chromedriver
+# webdriver-manager сам найдёт Chromium и скачает правильный Chromedriver
+echo "Chromedriver будет установлен автоматически через webdriver-manager"
 
 echo "Проверка тестов:"
 ls -la lab4/openbmc_tests/*.py || { echo "Тестовые файлы не найдены"; exit 1; }
 
-echo "Запуск pytest..."
+echo "🚀 Запуск pytest..."
 cd lab4 || exit 1
 pytest openbmc_tests/ \
     --html=test-report.html \
