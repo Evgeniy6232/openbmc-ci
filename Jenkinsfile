@@ -9,7 +9,48 @@ pipeline {
                     ./scripts/start_qemu.sh &
                     sleep 60
                 '''
+         stage('WEB UI тесты') {
+            steps {
+                sh '''
+                    # Активируем виртуальное окружение
+                    source lab4/venv/bin/activate
+                    
+                    # Проверяем тесты
+                    ls -la lab4/openbmc_tests/*.py
+                    
+                    # Запускаем все тесты OpenBMC WEB UI
+                    pytest lab4/openbmc_tests/ \
+                        --html=lab4/test-report.html \
+                        --self-contained-html \
+                        -v \
+                        --tb=short
+                    
+                    echo "WEB UI тесты завершены!"
+                '''
             }
+            post {
+                always {
+                    # Сохраняем отчёт тестов в Jenkins
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'lab4/',
+                        reportFiles: 'test-report.html',
+                        reportName: 'OpenBMC WEB UI Test Report'
+                    ])
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            sh '''
+                docker stop qemu-openbmc || true
+                docker rm qemu-openbmc || true
+            '''
+            echo 'Очистка завершена'
         }
     }
 }
