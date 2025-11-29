@@ -6,7 +6,7 @@ docker rm -f qemu-openbmc 2>/dev/null || true
 echo "OK"
 
 echo "Сборка qemu-openbmc образа..."
-docker build -t qemu-openbmc .
+docker build -t qemu-openbmc ./docker/qemu
 
 echo "Запуск OpenBMC QEMU..."
 docker run -d --name qemu-openbmc \
