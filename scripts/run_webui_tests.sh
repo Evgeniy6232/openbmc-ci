@@ -16,7 +16,8 @@ echo "Chromedriver будет установлен автоматически ч
 echo "Проверка тестов:"
 ls -la lab4/openbmc_tests/*.py || { echo "Тестовые файлы не найдены"; exit 1; }
 
-echo "🚀 Запуск pytest..."
+echo "
+Запуск pytest..."
 cd lab4 || exit 1
 pytest openbmc_tests/ \
     --html=test-report.html \
