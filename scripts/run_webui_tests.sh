@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "🧪 Запуск WEB UI тестов OpenBMC..."
+echo "Запуск WEB UI тестов OpenBMC..."
 
 echo "Создание/обновление venv..."
 rm -rf lab4/venv || true
